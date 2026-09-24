@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assistant IA — Entreprise</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="chat-container">
+        <header>
+            <h1>Assistant IA de l'entreprise</h1>
+            <p>Posez une question sur nos documents internes.</p>
+        </header>
+
+        <div id="chat-window" class="chat-window"></div>
+
+        <form id="chat-form" class="chat-form">
+            <input
+                type="text"
+                id="question-input"
+                placeholder="Posez votre question..."
+                autocomplete="off"
+                required
+            >
+            <button type="submit">Envoyer</button>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById("chat-form");
+        const input = document.getElementById("question-input");
+        const chatWindow = document.getElementById("chat-window");
+
+        function addMessage(text, sender) {
+            const msg = document.createElement("div");
+            msg.className = "message " + sender;
+            msg.textContent = text;
+            chatWindow.appendChild(msg);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+            return msg;
+        }
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const question = input.value.trim();
+            if (!question) return;
+
+            addMessage(question, "user");
+            input.value = "";
+            const loadingMsg = addMessage("...", "bot-loading");
+
+            try {
+                const response = await fetch("/ask", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ question })
+                });
+                const data = await response.json();
+
+                loadingMsg.remove();
+                addMessage(data.answer, "bot");
+            } catch (err) {
+                loadingMsg.remove();
+                addMessage("Erreur : impossible de contacter le serveur.", "bot");
+            }
+        });
+    </script>
+</body>
+</html>

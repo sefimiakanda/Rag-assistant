@@ -1,0 +1,45 @@
+services:
+  # Le moteur LLM, dans son propre conteneur. Il télécharge et sert les modèles.
+  ollama:
+    image: ollama/ollama:latest
+    volumes:
+      - ollama_data:/root/.ollama   # les modèles téléchargés persistent entre redémarrages
+    restart: unless-stopped
+    # Décommentez ces lignes si votre serveur a un GPU NVIDIA (accélère beaucoup les réponses) :
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+
+  # L'API FastAPI + interface web
+  app:
+    build: .
+    depends_on:
+      - ollama
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+    volumes:
+      - ./data:/app/data
+      - ./chroma_db:/app/chroma_db
+    restart: unless-stopped
+    # Pas de "ports:" ici : seul nginx est exposé publiquement (voir plus bas)
+    expose:
+      - "8000"
+
+  # Reverse proxy : c'est lui qui est exposé sur Internet (port 80/443)
+  nginx:
+    image: nginx:alpine
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+      # - "443:443"   # à activer une fois le certificat HTTPS configuré (voir README)
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    restart: unless-stopped
+
+volumes:
+  ollama_data:

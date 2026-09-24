@@ -1,0 +1,18 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+*.pyc
+chroma_db/
+chroma_db_notebook/
+.env
+data/*.pdf
+!data/.gitkeep
+

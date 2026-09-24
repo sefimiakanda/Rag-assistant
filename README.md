@@ -1,8 +1,7 @@
 # Assistant RAG Entreprise — 100% local et gratuit
 
 Assistant question/réponse basé sur un document PDF interne, utilisant
-uniquement des modèles open source servis en local via Ollama (aucun crédit
-API à dépenser).
+uniquement des modèles open source servis en local via Ollama (aucun crédit API à dépenser).
 
 ## Stack
 - **LLM** : `llama3.2:3b` (via Ollama)
@@ -26,9 +25,8 @@ uv sync
 ```
 (ou `uv add <package>` si vous ajoutez des dépendances au fur et à mesure)
 
-## 3. Explorer le pipeline (optionnel mais recommandé)
-Ouvrez `notebook_rag.py` dans VS Code et exécutez les cellules `# %%`
-une par une pour comprendre chaque étape du RAG.
+## 3. Explorer le pipeline 
+Ouvrez `notebook_rag.ipynb` dans VS Code pour comprendre chaque étape du RAG.
 
 ## 4. Ajouter votre document
 Placez le PDF de l'entreprise dans `data/`.
@@ -65,10 +63,8 @@ rag-assistant/
 ## Déployer pour toute l'entreprise (accès web)
 
 Le fait que le LLM tourne "en local" ne veut pas dire qu'il doit rester sur
-votre PC : la même stack peut tourner sur un serveur (interne ou cloud) et
-être accessible depuis un navigateur, par plusieurs employés. Le coût du
-modèle reste nul ; seul le serveur qui l'héberge a un coût s'il est loué
-dans le cloud.
+le PC : la même stack peut tourner sur un serveur (interne ou cloud) et
+être accessible depuis un navigateur, par plusieurs employés.
 
 1. **Installez Docker** sur le serveur (interne ou VPS cloud : OVH, Hetzner,
    Scaleway, AWS...).

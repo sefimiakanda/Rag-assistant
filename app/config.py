@@ -1,8 +1,3 @@
-"""
-Configuration centrale du projet.
-Toutes les valeurs "en dur" (noms de modèles, chemins, tailles de chunks)
-sont regroupées ici pour être faciles à modifier sans toucher au reste du code.
-"""
 import os
 from pathlib import Path
 from dotenv import load_dotenv
@@ -14,9 +9,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data"
 CHROMA_DIR = BASE_DIR / "chroma_db"
 
-# --- Modèles Ollama (100 % gratuits, tournent en local ou sur votre serveur) ---
-# Modèle de génération : choisi pour tourner confortablement sur 16 Go de RAM (CPU).
-# Alternatives si votre machine/serveur le permet : "qwen2.5:7b-instruct", "phi3.5:3.8b"
+# --- Modèles Ollama ---
+
 LLM_MODEL = os.getenv("LLM_MODEL", "llama3.2:3b")
 # Modèle d'embeddings : léger, dédié à la recherche sémantique
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "nomic-embed-text")

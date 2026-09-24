@@ -41,7 +41,7 @@ class Question(BaseModel):
 @app.get("/")
 def home(request: Request):
     """Affiche la page d'accueil (le chat)."""
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse(request, "index.html", {})
 
 
 @app.post("/ask")
